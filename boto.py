@@ -25,8 +25,8 @@ robot={'afraid':'why so scared?',
        'broke':'but i love you!',
        'money':'i love money too'
        }
-questions={'your name':'my name is boto','my name': 'your name is **user_name**','old you':'i am too old to tell', 'old am i':'you are **user_age**','are you':'i am fine and you',
-           'do i get':'i suggest tou ask that to google maps','language you speak':'i speak english and you','you hungry':'very want to grab a bite?'}
+questions={'your name':'my name is boto','my name': 'your name is **user_name**','how old are you':'i am too old to tell', 'old am i':'you are **user_age**','how are you':'i am fine and you',
+           'do i get':'i suggest you ask that to google maps','language you speak':'i speak english and you','you hungry':'very want to grab a bite?'}
 
 jokes=['Can a kangaroo jump higher than a house? Of course, a house doesn’t jump at all',
        ' Anton, do you think I’m a bad mother? My name is Paul.',
@@ -71,20 +71,17 @@ def injectMemory(phrase):
 def handle_questions(msg):
     for question in questions:
         if question in msg:
-            return {"ok": "laughing", "msg": questions[question]}
-        else:
-            return {"no": "laughing", "msg": 'sorry but your question is unclear please ask again'}
-
+            return {"animation": "ok", "msg": questions[question]}
+    return {"animation": "no", "msg": 'sorry but your question is unclear please ask again'}
 
 
 
 # //getting a message from the clien and returning it
 @route("/chat", method='POST')
 def chat():
-    user_message = request.POST.get('msg')
+    user_message = request.POST.get('msg').lower()
     user_name = request.cookies.get('name', 'nouser')
     robotAnswer = {"animation": "giggling", "msg": "that is very funny"}
-    boto_memory['user_name'] = user_message
     if user_name == "nouser":
         response.set_cookie('name', user_message)
         boto_memory['user_name'] = user_message
