@@ -93,6 +93,8 @@ ChatBot.sendMessage = function () {
             $.post(ChatBot.SERVER_PATH + "/chat", {"msg": chatInput.val()}, function (result) {
                 if (typeof result != "undefined" && "msg" in result) {
                     ChatBot.setAnimation(result.animation);
+                    // ChatBot.initSpeechConfig();
+                    // ChatBot.bindUserActions();
                     ChatBot.write(result.msg, "boto");
                 } else {
                     //The server did not erred but we got an empty result (handling as error)
