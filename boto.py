@@ -33,10 +33,13 @@ jokes=['Can a kangaroo jump higher than a house? Of course, a house doesn’t ju
        'Scientists have now discovered how women keep their secrets.They do so within groups of 40.',
        'My wife’s cooking is so bad we usually pray after our food.',
        'I cannot believe I forgot to go to the gym today. that is 7 years in a row now.',
-       'What goes up and down but never moves? the stairs']
-bad_words=['']
-answers={"first":False}
-c = cookies.SimpleCookie()
+       'What goes up and down but never moves? the stairs',
+       'Why was the robot angry? because someone pushed his buttons']
+
+negatives={'love you':'but i love you','hate you': 'ohhhhhhh i love you too'}
+bad_words=['fuck you','asshole','bitch','fuck','slut','cunt','nigger','dick','dickhead','shit']
+# answers={"first":False}
+
 
 @route('/', method='GET')
 def index():
@@ -74,9 +77,14 @@ def handle_questions(msg):
             return {"animation": "ok", "msg": questions[question]}
     return {"animation": "no", "msg": 'sorry but your question is unclear please ask again'}
 
+def check_bad_words(msg):
+    for word in bad_words:
+        if word in msg:
+         return True
 
 
-# //getting a message from the clien and returning it
+
+# //getting a message from the client and returning it
 @route("/chat", method='POST')
 def chat():
     user_message = request.POST.get('msg').lower()
@@ -89,13 +97,16 @@ def chat():
     elif '?' in user_message:
         robotAnswer=handle_questions(user_message)
     else:
-        for word in animation:
-            if word in user_message:
-                robotAnswer = check_for_special_word(word)
-            elif 'what'in user_message and 'time' in user_message:
-                robotAnswer = time()
-            elif 'joke' in user_message:
-                robotAnswer = joke()
+         if not check_bad_words(user_message):
+            for word in animation:
+                if word in user_message:
+                    robotAnswer = check_for_special_word(word)
+                elif 'what'in user_message and 'time' in user_message:
+                    robotAnswer = time()
+                elif 'joke' in user_message:
+                    robotAnswer = joke()
+         else:
+            robotAnswer = {"animation": "heartbroke", "msg": "sorry i only talk to polite people"}
     robotAnswer["msg"] = injectMemory(robotAnswer["msg"])
     return json.dumps(robotAnswer)
 
