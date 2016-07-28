@@ -36,9 +36,9 @@ jokes=['Can a kangaroo jump higher than a house? Of course, a house doesn’t ju
        'What goes up and down but never moves? the stairs',
        'Why was the robot angry? because someone pushed his buttons']
 
-negatives={'love you':'but i love you','hate you': 'ohhhhhhh i love you too'}
+
 bad_words=['fuck you','asshole','bitch','fuck','slut','cunt','nigger','dick','dickhead','shit']
-# answers={"first":False}
+
 
 
 @route('/', method='GET')
@@ -81,6 +81,7 @@ def check_bad_words(msg):
     for word in bad_words:
         if word in msg:
          return True
+
 
 
 
